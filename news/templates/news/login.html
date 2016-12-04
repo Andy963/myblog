@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta charset="utf-8">
+<title > 登陆界面</title>
+    <link rel='stylesheet' href="{% static 'news/css/login.css' %}" />
+</head>
+
+<body>
+
+    <div class="header">
+        <img src="{% static 'news/images/art.jpg'%}"/>
+    </div>
+
+<div class="content">
+    <form action='verifyUser' method="post">
+         {% csrf_token %}
+    用户名：<input type="text" name="username"/><br/>
+    密　码：<input type="password" name = 'pwd'/><br/>
+        <br/><input type="submit" style="width:82px" value="登　　陆"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" style="width:82px" value="重新填写"/>
+    </form>
+</div>
+
+<div class="footer">
+    Designed by  &reg Andy
+</div>
+
+
+</body>
+</html>

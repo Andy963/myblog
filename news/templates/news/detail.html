@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+<link rel="stylesheet" type="text/css" href="{% static 'news/css/detail.css' %}"/>
+
+</head>
+<body>
+    <div class="header">
+        {% if blog  %}
+        <h4><p align="center">{{ blog.title }}&nbsp;&nbsp;<span class="times" >阅读{{blog.clickCount}}次</span></p></h4>
+
+
+    </div>
+    <div class="content">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;{{blog.content  }}</p>
+        {% endif %}
+    </div>
+
+    <div class="comment">
+
+    </div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,54 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+body
+{
+    margin-left: 10%;
+    width: 80%;
+    background-color: #B4DAF0;
+}
+
+
+.header
+{
+
+    height:40%;
+    border:1px solid black;
+}
+
+.header img
+{
+    width:80%;
+    height:100%;
+    margin-left: 10%;
+}
+
+.content
+{
+
+    border:1px solid red;
+    height:40%;
+}
+
+.content form
+{
+    margin-top: 40px;
+    margin-left: 38%;
+}
+
+.content span
+{
+    width: 80px;
+}
+.footer
+{
+    height:20%;
+    border:1px solid blue;
+    clear: both;
+    background-color: #B4DAF0;
+    text-align: center;
+    padding: 10px;
+
+}

@@ -1,0 +1,68 @@
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Andy's blog </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'news/css/index.css' %}"/>
+    <script language="JavaScript" type="text/javascript" src="{% static 'news/js/index.js' %}"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="famous"><span >时间永不回头，历史总在重演！</span></div>
+        <div class="catagory">
+            <ul class="classify">
+                <li>首&nbsp;&nbsp;页</li>
+                <li>发&nbsp;&nbsp;表</li>
+                <li>留&nbsp;&nbsp;言</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="text">
+            <div class="advice">
+                <img src="{% static 'news/images/tj.png'%}"/> <span class="newest">最新文章</span><hr/>
+            </div>
+            <div>
+                <ul class="essay">
+                    {% if title_list %}
+                        {% for title in title_list %}
+                            <li><h4>
+                                {% if  forloop.counter <= 4 %}&nbsp;&nbsp;
+                                <a href="/news/{{ title.id }}/">{{ title }}</a>
+                                &nbsp;&nbsp;<span> 作者：{{title.author.name}}&nbsp;&nbsp;发表时间:{{title.pub_date|date:"Y-m-d H:i"}} </span> </h4><br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{title.content|truncatechars:100}}
+                            </li>
+                            <br/>
+                        {% endif %}
+                        {% endfor %}
+
+                    {% else %}
+                        <p>No titles are available.</p>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="hanger">
+            <span>&nbsp;&nbsp;关于博主</span><br/><hr/>
+            <div class="head">
+                <img src="{% static 'news/images/andy.png'%}"/>
+            </div>
+            <ul class="introduce">
+                <li>昵称：Andy </li>
+                <li>职业：业余 </li>
+                <a  href="# " title="联系博主"><img src="{% static 'news/images/QQ.png'%}"/></a>
+
+            </ul>
+            <div class="catalog">
+                This is catalog
+            </div>
+
+        </div>
+    </div>
+    <div class="footer">
+        Designed by  &reg Andy
+    </div>
+
+</body>
+</html>
