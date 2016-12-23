@@ -57,6 +57,7 @@ def get_query(request, pk=''):
 """
 
 def login(request):
+	# some test of logger
 	try:
 		# example
 		file = open('xxx.txt', 'r')

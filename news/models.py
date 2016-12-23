@@ -30,6 +30,7 @@ class Author(models.Model):
 
 
 # 分类
+@python_2_unicode_compatible
 class Category(models.Model):
 	name = models.CharField(verbose_name='分类名称', max_length=30)
 	index = models.IntegerField(verbose_name='分类排序', default=999)
@@ -43,6 +44,7 @@ class Category(models.Model):
 
 
 # 标签
+@python_2_unicode_compatible
 class Tag(models.Model):
 	name = models.CharField(verbose_name='标签', max_length=30)
 
@@ -66,7 +68,7 @@ class Article(models.Model):
 
 	#comment = models.TextField(verbose_name = '评论',max_length=200,blank=True, null=True)
 	# models.CASCADE django will delete related database
-	author = models.ForeignKey(Author, on_delete=models.CASCADE)
+	author = models.ForeignKey(Author, verbose_name= '作者',on_delete=models.CASCADE)
 	category = models.ForeignKey(Category, verbose_name='分类', blank=True, null=True)
 	tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
@@ -82,6 +84,7 @@ class Article(models.Model):
 
 
 # 评论
+@python_2_unicode_compatible
 class Comment(models.Model):
 	content = models.TextField(verbose_name= '评论内容',max_length= 200)
 	pub_date = models.DateTimeField(verbose_name='发布日期', default=timezone.now)
