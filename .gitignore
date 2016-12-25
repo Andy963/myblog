@@ -1,0 +1,7 @@
+# ignore some file
+*.pyc
+
+# ignore .idea folder
+.idea/
+
+function.txt
