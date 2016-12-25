@@ -2,6 +2,8 @@ import datetime
 from django.utils import timezone
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
+
 # Create your models here.
 
 
@@ -17,6 +19,11 @@ class Author(models.Model):
 	email = models.EmailField(verbose_name = "邮件",blank=True, null=True)
 	total_blog = models.IntegerField(verbose_name = "文章总数", default=0)
 
+	SEX_STATUS = (
+			('1','male'),
+			('0', 'female'),
+			('-1', 'unknown'),
+		)
 	# if you want to use ImageField you should install pillow
 	#avatar = models.ImageField(upload_to = 'photos')
 
@@ -72,6 +79,16 @@ class Article(models.Model):
 	category = models.ForeignKey(Category, verbose_name='分类', blank=True, null=True)
 	tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
+	"""
+	STATUS_CHOICES = (
+		('d', 'Draft'),
+		('p', 'Published'),
+	)
+	"""
+	def get_absolute_url(self):
+		# 这里 reverse 解析 blog:detail 视图函数对应的 url
+		return reverse('blog:detail', kwargs={'article_id': self.pk})
+
 	class Meta:
 		# ordering with pub_date decreasing then browse increasing
 		ordering = ['-pub_date', 'clickCount']
@@ -87,9 +104,9 @@ class Article(models.Model):
 @python_2_unicode_compatible
 class Comment(models.Model):
 	content = models.TextField(verbose_name= '评论内容',max_length= 200)
-	pub_date = models.DateTimeField(verbose_name='发布日期', default=timezone.now)
+	pub_date = models.DateTimeField(verbose_name='发布日期', auto_now_add=True)
 	author = models.ForeignKey(Author, verbose_name='评论作者')
-	article = models.ForeignKey(Article, verbose_name='文章')
+	article = models.ForeignKey(Article, verbose_name='评论所属文章', on_delete=models.CASCADE)
 	pid = models.ForeignKey('self', verbose_name='父级评论',blank=True, null=True)
 
 	class Meta:
