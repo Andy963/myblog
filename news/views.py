@@ -44,7 +44,11 @@ class DetailView(generic.DetailView):
 		clickCount += 1
 		article.clickCount = clickCount
 		article.save()
-		return render(request, 'news/detail.html', {'blog': article})
+
+		# Show comment_list at detail html
+		comment_list = article.comment_set.all()
+
+		return render(request, 'news/detail.html', {'blog': article, 'comment_list': comment_list})
 
 	# 新增 form 到 context
 	def get_context_data(self, **kwargs):

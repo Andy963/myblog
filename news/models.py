@@ -79,15 +79,9 @@ class Article(models.Model):
 	category = models.ForeignKey(Category, verbose_name='分类', blank=True, null=True)
 	tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
-	"""
-	STATUS_CHOICES = (
-		('d', 'Draft'),
-		('p', 'Published'),
-	)
-	"""
 	def get_absolute_url(self):
 		# 这里 reverse 解析 blog:detail 视图函数对应的 url
-		return reverse('blog:detail', kwargs={'article_id': self.pk})
+		return reverse('news:detail', kwargs={'article_id': self.pk})
 
 	class Meta:
 		# ordering with pub_date decreasing then browse increasing
