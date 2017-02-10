@@ -2,16 +2,23 @@
 #! /usr/bin/env python
 
 from django.conf.urls import url, include
-from . import views
+from news.views import *
 
 app_name = 'news'
-urlpatterns = [
-	url(r'^$', views.IndexView.as_view(), name='index'),
-	url(r'^login$', views.login, name='login'),
-	url(r'^verifyUser$', views.verifyUser, name='verifyUser'),
-	url(r'^(?P<article_id>\d+)/$', views.DetailView.as_view(), name='detail'),
-	url(r'^(?P<article_id>\d+)/comment$', views.CommentView.as_view(), name='comment'),
-	#url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
-	#url(r'^(?P<pk>[0-9]+)/$', views.get_query, name='detail'),
 
+#　main site
+urlpatterns = [
+               url(r'^$',IndexView.as_view(), name='index'),
+]
+
+# login
+urlpatterns += [
+	url(r'^login$', login, name='login'),
+	url(r'^verifyUser$', verifyUser, name='verifyUser'),
+]
+
+# skim
+urlpatterns += [
+	url(r'^(?P<article_id>\d+)/$', DetailView.as_view(), name='detail'),
+	url(r'^(?P<article_id>\d+)/comment$', CommentView.as_view(), name='comment'),
 ]
