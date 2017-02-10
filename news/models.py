@@ -101,6 +101,7 @@ class Comment(models.Model):
 	pub_date = models.DateTimeField(verbose_name='发布日期', auto_now_add=True)
 	author = models.ForeignKey(Author, verbose_name='评论作者')
 	article = models.ForeignKey(Article, verbose_name='评论所属文章', on_delete=models.CASCADE)
+	count = models.IntegerField(verbose_name='评论次数',default=0)
 	pid = models.ForeignKey('self', verbose_name='父级评论',blank=True, null=True)
 
 	class Meta:

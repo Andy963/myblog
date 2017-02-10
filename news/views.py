@@ -33,7 +33,6 @@ class DetailView(generic.DetailView):
 	#context_object_name = 'blog'
 
 	def get_queryset(self):
-
 		return Article.objects.filter(pub_date__lte=timezone.now())
 
 	def get(self, request, *args, **kwargs):
@@ -46,8 +45,9 @@ class DetailView(generic.DetailView):
 
 		# Show comment_list at detail html
 		comment_list = article.comment_set.all()
+		comment_count = article.comment_set.count()
 
-		return render(request, 'news/detail.html', {'blog': article, 'comment_list': comment_list})
+		return render(request, 'news/detail.html', {'blog': article, 'comment_list': comment_list, 'comment_count':comment_count})
 
 	# 新增 form 到 context
 	def get_context_data(self, **kwargs):
@@ -98,6 +98,10 @@ class CommentView(FormView):
 		targetArticle = get_object_or_404(Article, pk=self.kwargs['article_id'])
 		comment =  form.save(commit=False)
 		comment.article = targetArticle
+		# get the count of comment
+		comment_count = targetArticle.comment_set.count()
+		comment_count += 1
+
 		comment.save()
 
 		self.success_url = targetArticle.get_absolute_url()
