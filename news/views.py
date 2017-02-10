@@ -1,7 +1,6 @@
 #coding:utf-8
 
 from django.shortcuts import render, get_object_or_404,render_to_response
-from django.http import HttpResponse
 from django.views import generic
 from django.views.generic.edit import FormView
 from .models import Article, Author, Comment
@@ -22,8 +21,8 @@ class IndexView(generic.ListView):
 	context_object_name = 'title_list'
 
 	def get_queryset(self):
-		# return the last ten published blog
-		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:10]
+		# return the last five published blog
+		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
 
 
@@ -111,3 +110,4 @@ class CommentView(FormView):
 			'article': targetArticle,
 			'comment_list': targetArticle.comment_set.all(),
 		})
+

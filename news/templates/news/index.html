@@ -32,6 +32,7 @@
                                 <a href="/news/{{ title.id }}/">{{ title }}</a>
                                 &nbsp;&nbsp;<span> 作者：{{title.author.name}}&nbsp;&nbsp;发表时间:{{title.pub_date|date:"Y-m-d H:i"}} </span> </h4><br/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;{{title.content|truncatechars:100}}
+                                    <hr/>
                             </li>
                             <br/>
                         {% endif %}
