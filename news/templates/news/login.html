@@ -15,6 +15,11 @@
 <div class="content">
     <form action='verifyUser' method="post">
          {% csrf_token %}
+        {% if tips %}
+            <div class="tip">{{ tips }}</div>
+        {% endif %}
+
+
     用户名：<input type="text" name="username"/><br/>
     密　码：<input type="password" name = 'pwd'/><br/>
         <br/><input type="submit" style="width:82px" value="登　　陆"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" style="width:82px" value="重新填写"/>

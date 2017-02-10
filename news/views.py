@@ -68,25 +68,27 @@ def get_query(request, pk=''):
 	return render(request, 'news/detail.html',{'blog':blog})
 """
 
+# log on
 def login(request):
-	# some test of logger
-	try:
-		# example
-		file = open('xxx.txt', 'r')
-	except Exception as e:
-		logger.error(e)
 	return render(request, 'news/login.html')
 
+# virify if user is valid
 def verifyUser(request):
 	if request.method == 'POST':
-		username = request.POST['username']
+		tips = 'Invalid user name or password, please try again!'
+		user_name = request.POST['username']
 		password = request.POST['pwd']
-		user = auth.authenticate(username=username, password=password)
-		if user is not None and user.is_active:
-			auth.login(request, user)
-			return HttpResponseRedirect("../news")
-		else:
-			return render_to_response('news/login.html',RequestContext(request, {'username': username, 'password_is_wrong': True}))
+		try:
+			user = auth.authenticate(username=user_name, password=password)
+			if user is not None and user.is_active:
+				auth.login(request, user)
+				return HttpResponseRedirect("../news")
+			else:
+				return render_to_response('news/login.html', {'tips': tips}, RequestContext(request,\
+				{'username': user_name,'password': password}))
+		except Exception as e:
+			logger.error(e)
+
 
 class CommentView(FormView):
 	form_class = CommentForm
