@@ -1,4 +1,6 @@
 #coding:utf-8
+#!/usr/bin/env python
+
 
 from django.shortcuts import render, get_object_or_404,render_to_response
 from django.views import generic
@@ -55,19 +57,6 @@ class DetailView(generic.DetailView):
 		kwargs['form'] = CommentForm()
 		return super(DetailView, self).get_context_data(**kwargs)
 
-
-"""
-def get_query(request, pk=''):
-# 根据文章的id 对每一次点击累加
-	blog = Article.objects.get(id=pk)
-	browses = blog.browse
-	browses += 1
-	blog.browse = browses
-	blog.save()
-	#obj = Article.objects.filter(pub_date__lte=timezone.now())
-	return render(request, 'news/detail.html',{'blog':blog})
-"""
-
 # log on
 def login(request):
 	return render(request, 'news/login.html')
@@ -93,6 +82,13 @@ def verifyUser(request):
 class CommentView(FormView):
 	form_class = CommentForm
 	template_name = 'news/detail.html'
+
+	# check the user
+	def get_current_user(self, request):
+		if request.method == "POST":
+			user = request.user
+			if not user in auth.authenticate():
+				pass
 
 	def form_valid(self, form):
 		targetArticle = get_object_or_404(Article, pk=self.kwargs['article_id'])

@@ -17,8 +17,9 @@
     <div class="content">
         <p>&nbsp;&nbsp;&nbsp;&nbsp;{{blog.content  }}</p>
         {% endif %}
+
     </div>
-    <p>共有{{ comment_count }}条评论</p>
+        <p class="total_comment">共有{{ comment_count }}条评论</p>
     <div>
             {% include 'news/comment.html' %}
     </div>

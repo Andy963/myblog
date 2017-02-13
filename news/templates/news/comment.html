@@ -1,3 +1,8 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{%  static 'news/css/comment.css' %}"/>
+</head>
 <div class="comment">
     <div class="comment-main">
         <p class="head">评论详情</p>
@@ -17,7 +22,7 @@
         {% for comment in comment_list %}
             <div class="main-content">
                 <span class="user-nickname">{{ comment.author }}</span>
-                <time class="time">{{ comment.pub_date }}</time>
+                <time class="time">&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.pub_date|date:"Y-m-d H:i" }}</time>
                 <div class="comment-content">
                     {{ comment.content }}
                 </div>
@@ -27,3 +32,4 @@
         {% endfor %}
     </div>
 </div>
+</html>
