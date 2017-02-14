@@ -11,19 +11,17 @@
     <div class="header">
         {% if blog  %}
         <h4><p align="center">{{ blog.title }}&nbsp;&nbsp;<span class="times" >阅读{{blog.clickCount}}次</span></p></h4>
-
-
     </div>
     <div class="content">
         <p>&nbsp;&nbsp;&nbsp;&nbsp;{{blog.content  }}</p>
         {% endif %}
-
     </div>
+    <div>
         <p class="total_comment">共有{{ comment_count }}条评论</p>
+    </div>
     <div>
             {% include 'news/comment.html' %}
     </div>
-
 </body>
 </html>
 

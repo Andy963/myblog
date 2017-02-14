@@ -5,9 +5,7 @@
 </head>
 <div class="comment">
     <div class="comment-main">
-        <p class="head">评论详情</p>
-
-        <form method="post" action="./comment">
+        <form method="post" action="./comment ">
             {% csrf_token %}
             <div class="row">
                 {% for field in form %}
@@ -16,19 +14,20 @@
                     <br>
                 {% endfor %}
             </div>
-            <button type="submit" class="com-button">评论</button>
+           &nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" class="com-button">评论</button>
         </form>
-        <hr>
+        <p class="head">评论详情:</p>
         {% for comment in comment_list %}
+            <hr>
             <div class="main-content">
-                <span class="user-nickname">{{ comment.author }}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="user-nickname">{{ comment.author }}</span>
                 <time class="time">&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.pub_date|date:"Y-m-d H:i" }}</time>
                 <div class="comment-content">
-                    {{ comment.content }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.content }}
+
                 </div>
         {#                <a href="">回复</a>#}
             </div>
-            <hr>
         {% endfor %}
     </div>
 </div>

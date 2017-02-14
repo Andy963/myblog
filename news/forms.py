@@ -2,25 +2,27 @@
 #coding:utf-8
 #@Author:Andy
 
-from django import forms
+from django.forms import ModelForm, Textarea
+from django.utils.translation import ugettext_lazy as _
 from .models import Article , Comment
 
-class CommentForm(forms.ModelForm):
+class CommentForm(ModelForm):
 	class Meta:
 		model = Comment
 
 		fields = ['author', 'content']
-
 		widgets = {
-            # 为各个需要渲染的字段指定渲染成什么html组件，主要是为了添加css样式。
-            # 例如 user_name 渲染后的html组件如下：
-            # <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
-			'author': forms.TextInput(attrs={
-				'label': 'Your nick-name',
-                'class': 'form-control',
-                'placeholder': "请输入昵称",
-                'aria-describedby': "sizing-addon1",
-            }),
+			'content': Textarea(attrs={'cols': 120, 'rows': 10, 'placeholder': '我来评两句~'}),
+		}
 
-			'content': forms.Textarea(attrs={'placeholder': '我来评两句~'}),
-        }
+		labels = {
+			'content': _('content'),
+		}
+		help_texts = {
+			'content': _('Some useful help text.'),
+		}
+		error_messages = {
+			'content': {
+				'max_length': _("This content name is too long."),
+			},
+		}

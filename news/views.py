@@ -49,11 +49,12 @@ class DetailView(generic.DetailView):
 		comment_list = article.comment_set.all()
 		comment_count = article.comment_set.count()
 
-		return render(request, 'news/detail.html', {'blog': article, 'comment_list': comment_list, 'comment_count':comment_count})
+		context = {'blog': article, 'comment_list': comment_list, 'comment_count':comment_count}
+
+		return render(request, 'news/detail.html', context)
 
 	# 新增 form 到 context
 	def get_context_data(self, **kwargs):
-		kwargs['comment_list'] = self.object.comment_set.all()
 		kwargs['form'] = CommentForm()
 		return super(DetailView, self).get_context_data(**kwargs)
 
@@ -83,16 +84,10 @@ class CommentView(FormView):
 	form_class = CommentForm
 	template_name = 'news/detail.html'
 
-	# check the user
-	def get_current_user(self, request):
-		if request.method == "POST":
-			user = request.user
-			if not user in auth.authenticate():
-				pass
 
 	def form_valid(self, form):
 		targetArticle = get_object_or_404(Article, pk=self.kwargs['article_id'])
-		comment =  form.save(commit=False)
+		comment =  form.save(commit=True)
 		comment.article = targetArticle
 		# get the count of comment
 		comment_count = targetArticle.comment_set.count()
@@ -112,4 +107,6 @@ class CommentView(FormView):
 			'article': targetArticle,
 			'comment_list': targetArticle.comment_set.all(),
 		})
+
+
 

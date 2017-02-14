@@ -11,19 +11,21 @@ from django.core.urlresolvers import reverse
 # 作者
 @python_2_unicode_compatible
 class Author(models.Model):
+
+	SEX_STATUS = (
+			('1','male'),
+			('-1', 'female'),
+			('0', 'unknown'),
+		)
+
 	name = models.CharField(verbose_name = "姓名", max_length=20)
-	sex = models.IntegerField(verbose_name= '性别', blank=True, null=True)
+	sex = models.IntegerField(choices= SEX_STATUS, verbose_name= '性别', blank=True, null=True)
 	birthday = models.DateTimeField(verbose_name= '生日', blank=True, null=True)
 	registerTime = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
 	latestLogTime = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)
 	email = models.EmailField(verbose_name = "邮件",blank=True, null=True)
 	total_blog = models.IntegerField(verbose_name = "文章总数", default=0)
 
-	SEX_STATUS = (
-			('1','male'),
-			('0', 'female'),
-			('-1', 'unknown'),
-		)
 	# if you want to use ImageField you should install pillow
 	#avatar = models.ImageField(upload_to = 'photos')
 
