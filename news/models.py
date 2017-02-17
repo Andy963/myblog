@@ -13,13 +13,12 @@ from django.core.urlresolvers import reverse
 class Author(models.Model):
 
 	SEX_STATUS = (
-			('1','male'),
-			('-1', 'female'),
-			('0', 'unknown'),
-		)
+			('0','male'),
+			('1', 'female'),
+			('2', 'unknown'),)
 
 	name = models.CharField(verbose_name = "姓名", max_length=20)
-	sex = models.IntegerField(choices= SEX_STATUS, verbose_name= '性别', blank=True, null=True)
+	sex = models.IntegerField(choices= SEX_STATUS, verbose_name= '性别', default=2)
 	birthday = models.DateTimeField(verbose_name= '生日', blank=True, null=True)
 	registerTime = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
 	latestLogTime = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)

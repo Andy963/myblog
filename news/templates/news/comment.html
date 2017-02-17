@@ -10,13 +10,14 @@
             <div class="row">
                 {% for field in form %}
                     {{ field }}
-                    {{ field.errors }}
+                    <!--{{ field.errors }}-->
                     <br>
                 {% endfor %}
             </div>
+
            &nbsp;&nbsp;&nbsp;&nbsp; <button type="submit" class="com-button">评论</button>
         </form>
-        <p class="head">评论详情:</p>
+        <p class="head">评论详情:<span class="total_comment">共有{{ comment_list.count }}条评论</span></p>
         {% for comment in comment_list %}
             <hr>
             <div class="main-content">
@@ -24,11 +25,10 @@
                 <time class="time">&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.pub_date|date:"Y-m-d H:i" }}</time>
                 <div class="comment-content">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ comment.content }}
-
                 </div>
-        {#                <a href="">回复</a>#}
             </div>
         {% endfor %}
+
     </div>
 </div>
 </html>

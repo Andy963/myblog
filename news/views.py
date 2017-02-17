@@ -26,9 +26,6 @@ class IndexView(generic.ListView):
 		# return the last five published blog
 		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
-
-
-
 class DetailView(generic.DetailView):
 	model = Article
 	template_name = 'news/detail.html'
@@ -47,14 +44,13 @@ class DetailView(generic.DetailView):
 
 		# Show comment_list at detail html
 		comment_list = article.comment_set.all()
-		comment_count = article.comment_set.count()
-
-		context = {'blog': article, 'comment_list': comment_list, 'comment_count':comment_count}
+		context = {'blog': article, 'comment_list': comment_list}
 
 		return render(request, 'news/detail.html', context)
 
 	# 新增 form 到 context
 	def get_context_data(self, **kwargs):
+
 		kwargs['form'] = CommentForm()
 		return super(DetailView, self).get_context_data(**kwargs)
 
@@ -62,7 +58,7 @@ class DetailView(generic.DetailView):
 def login(request):
 	return render(request, 'news/login.html')
 
-# virify if user is valid
+# verify if user is valid
 def verifyUser(request):
 	if request.method == 'POST':
 		tips = 'Invalid user name or password, please try again!'
@@ -82,17 +78,15 @@ def verifyUser(request):
 
 class CommentView(FormView):
 	form_class = CommentForm
-	template_name = 'news/detail.html'
-
+	template_name = 'news/comment.html'
 
 	def form_valid(self, form):
 		targetArticle = get_object_or_404(Article, pk=self.kwargs['article_id'])
-		comment =  form.save(commit=True)
+		comment =  form.save(commit=False)
 		comment.article = targetArticle
 		# get the count of comment
 		comment_count = targetArticle.comment_set.count()
 		comment_count += 1
-
 		comment.save()
 
 		self.success_url = targetArticle.get_absolute_url()

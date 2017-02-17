@@ -13,6 +13,13 @@ body{
     font-size: 10px;
 }
 
+.total_comment
+{
+    width: 80%;
+    height: 20px;
+    font-size: 12px;
+}
+
 hr{
     border: 1px dashed lightgoldenrodyellow;
 }
