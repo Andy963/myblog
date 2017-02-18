@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
+from DjangoUeditor.models import UEditorField
 
 # Create your models here.
 
@@ -12,13 +13,13 @@ from django.core.urlresolvers import reverse
 @python_2_unicode_compatible
 class Author(models.Model):
 
-	SEX_STATUS = (
-			('0','male'),
-			('1', 'female'),
-			('2', 'unknown'),)
+	GENDER = (
+			(0,'male'),
+			(1, 'female'),
+			(2, 'unknown'),)
 
 	name = models.CharField(verbose_name = "姓名", max_length=20)
-	sex = models.IntegerField(choices= SEX_STATUS, verbose_name= '性别', default=2)
+	gender = models.IntegerField(choices= GENDER, verbose_name= '性别', default=2)
 	birthday = models.DateTimeField(verbose_name= '生日', blank=True, null=True)
 	registerTime = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
 	latestLogTime = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)
@@ -67,12 +68,20 @@ class Tag(models.Model):
 # 文章
 @python_2_unicode_compatible
 class Article(models.Model):
+	ARTICLE_STATUS = (
+		(0, 'NotRecommend'),
+		(1, 'Recommend'),
+	)
+
 	title = models.CharField(verbose_name = '标题', max_length=200)
-	content = models.TextField(verbose_name = '内容', max_length=10000)
+	#content = models.TextField(verbose_name = '内容', max_length=10000)
+	content = UEditorField('内容', height=300, width=1000,
+        default=u'', blank=True, imagePath="uploads/images/",
+        toolbars='besttome', filePath='uploads/files/')
 	pub_date = models.DateTimeField(verbose_name = '发布日期', default=timezone.now)
 	update_date = models.DateTimeField(verbose_name= '最近修改日期',default=timezone.now)
 	clickCount = models.IntegerField(verbose_name = '浏览次数', default=0)
-	isRecommend = models.BooleanField(verbose_name='推荐',default=False)
+	isRecommend = models.IntegerField(choices=ARTICLE_STATUS, verbose_name='推荐',default=False)
 
 	#comment = models.TextField(verbose_name = '评论',max_length=200,blank=True, null=True)
 	# models.CASCADE django will delete related database

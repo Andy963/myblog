@@ -18,6 +18,12 @@ from .forms import CommentForm
 # use myself logger
 logger = logging.getLogger("blogLogger")
 
+def Index(request):
+	title_list = Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+	return render(request, 'news/index.html', {'title_list':title_list})
+
+
+"""
 class IndexView(generic.ListView):
 	template_name = 'news/index.html'
 	context_object_name = 'title_list'
@@ -25,6 +31,10 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		# return the last five published blog
 		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+"""
+
+
+
 
 class DetailView(generic.DetailView):
 	model = Article

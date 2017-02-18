@@ -13,7 +13,7 @@
         <h4><p align="center">{{ blog.title }}&nbsp;&nbsp;<span class="times" >阅读{{blog.clickCount}}次</span></p></h4>
     </div>
     <div class="content">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;{{blog.content  }}</p>
+        <p>&nbsp;{% autoescape off %}&nbsp;&nbsp;&nbsp;{{blog.content }}{% endautoescape %}</p>
         {% endif %}
     </div>
     <div>
