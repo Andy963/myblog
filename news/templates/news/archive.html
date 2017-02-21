@@ -1,0 +1,17 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script language="javascript" type="text/javascript"></script>
+</head>
+<body>
+    <ul>
+        {% for y, m in month_archive.items %}
+           <a href={%  url 'news:archive_month' y m.0 %} >{{ y }}年{% if m|length >= 2 %}{% for i in m %}{{ i }}月{% endfor %}{% else %}{{ m.0 }}月{% endif %}</a>
+        <br/>
+     {% endfor %}
+    </ul>
+</body>
+</html>
