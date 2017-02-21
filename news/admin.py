@@ -7,14 +7,14 @@ from .models import Article, Author, Tag, Category, Comment
 
 
 class ArticleAdmin(admin.ModelAdmin):
-	list_display = ('title', 'pub_date', 'clickCount', 'isRecommend')
+	list_display = ('title', 'pub_date', 'click_count', 'status','recommend')
 	search_fields = ('title', 'pub_date')
 	# if you set actions_on_bottom = True, there will have action at bottom ,so you have two
 	#actions_on_bottom = True;
 
-	actions = ['Recommend']
+	actions = ['Recommend', 'make_published']
 	def Recommend(self, request, queryset):
-		rows_updated = queryset.update(isRecommend=1)
+		rows_updated = queryset.update(recommend=1)
 		if rows_updated == 1:
 			message_bit = "1 article was"
 		else:
@@ -23,10 +23,20 @@ class ArticleAdmin(admin.ModelAdmin):
 
 	Recommend.short_description = "Recommend article（推荐文章）"
 
+	def make_published(self, request, queryset):
+		rows_updated = queryset.update(status='p')
+		if rows_updated == 1:
+			message_bit = "1 article was"
+		else:
+			message_bit = "%s articles were" % rows_updated
+		self.message_user(request, "%s successfully Published." % message_bit)
+
+	make_published.short_description = "Published article（发表文章）"
+
 	empty_value_display = '-empty-'
 	fieldsets = (
 		('基本内容：',{
-			'fields':('title', 'content', ( "author",'category','isRecommend'))
+			'fields':('title', 'content', ( "author",'category','recommend'))
 		}),
 
 		('高级选项：', {
@@ -45,10 +55,9 @@ class AuthorAdmin(admin.ModelAdmin):
 		else:
 			message_bit = "%s authors were" % rows_updated
 		self.message_user(request, "%s successfully changed." % message_bit)
+	select_gender.short_description = "select Author's gender"
 
-	select_gender.short_description = "selected Author's gender"
-
-	list_display = ('name','gender','birthday','registerTime','latestLogTime','email','total_blog')
+	list_display = ('name','gender','birthday','register_time','latest_log_time','email','total_blog')
 	search_fields = ('name','email','birthday','total_blog')
 
 	fieldsets = (
@@ -58,7 +67,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 		('高级选项：', {
 			'classes': ('collapse',),
-			'fields': ('registerTime',),
+			'fields': ('register_time',),
 		}),
 	)
 

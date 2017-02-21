@@ -9,11 +9,11 @@
 </head>
 <body>
     <div class="header">
-        {% if blog  %}
-        <h4><p align="center">{{ blog.title }}&nbsp;&nbsp;<span class="times" >阅读{{blog.clickCount}}次</span></p></h4>
+        {% if article  %}
+        <h4><p align="center">{{ article.title }}&nbsp;&nbsp;<span class="times" >阅读{{article.clickCount}}次</span></p></h4>
     </div>
     <div class="content">
-        <p>&nbsp;{% autoescape off %}&nbsp;&nbsp;&nbsp;{{blog.content }}{% endautoescape %}</p>
+        <p>&nbsp;{% autoescape off %}&nbsp;&nbsp;&nbsp;{{article.content }}{% endautoescape %}</p>
         {% endif %}
     </div>
     <div>

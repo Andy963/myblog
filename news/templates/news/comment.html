@@ -5,7 +5,7 @@
 </head>
 <div class="comment">
     <div class="comment-main">
-        <form method="post" action="./comment ">
+        <form method="post" action= {%  url 'news:comment' article.id%}>
             {% csrf_token %}
             <div class="row">
                 {% for field in form %}

@@ -1,10 +1,11 @@
+# coding: utf-8
 import datetime
 from django.utils import timezone
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from DjangoUeditor.models import UEditorField
-
+import collections
 # Create your models here.
 
 
@@ -21,8 +22,8 @@ class Author(models.Model):
 	name = models.CharField(verbose_name = "姓名", max_length=20)
 	gender = models.IntegerField(choices= GENDER, verbose_name= '性别', default=2)
 	birthday = models.DateTimeField(verbose_name= '生日', blank=True, null=True)
-	registerTime = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
-	latestLogTime = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)
+	register_time = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
+	latest_log_time = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)
 	email = models.EmailField(verbose_name = "邮件",blank=True, null=True)
 	total_blog = models.IntegerField(verbose_name = "文章总数", default=0)
 
@@ -64,24 +65,43 @@ class Tag(models.Model):
 	def __str__(self):
 		return self.name
 
+class ArticleManage(models.Manager):
+	def archive(self):
+		date_list = Article.objects.datetimes('pub_date', 'month', order='DESC')
+		year_month = collections.OrderedDict()
+		for date in date_list:
+			if not year_month.get(date.year):
+				year_month[date.year] = []
+				year_month[date.year].append(date.month)
+			elif year_month.get(date.year):
+				year_month[date.year].append(date.month)
+		return(year_month)
 
 # 文章
 @python_2_unicode_compatible
 class Article(models.Model):
-	ARTICLE_STATUS = (
-		(0, 'NotRecommend'),
-		(1, 'Recommend'),
+	objects = ArticleManage()
+
+	RECOMMEND = (
+		(0, 'not_recommend'),
+		(1, 'recommend'),
+	)
+
+	STATUS = (
+		('d', 'Draft'),
+		('p', 'Published'),
+		('w', 'Withdrawn'),
 	)
 
 	title = models.CharField(verbose_name = '标题', max_length=200)
 	#content = models.TextField(verbose_name = '内容', max_length=10000)
-	content = UEditorField('内容', height=300, width=1000,
-        default=u'', blank=True, imagePath="uploads/images/",
+	content = UEditorField('内容', height=300, width=1000,default=u'', blank=True, imagePath="uploads/images/",
         toolbars='besttome', filePath='uploads/files/')
 	pub_date = models.DateTimeField(verbose_name = '发布日期', default=timezone.now)
 	update_date = models.DateTimeField(verbose_name= '最近修改日期',default=timezone.now)
-	clickCount = models.IntegerField(verbose_name = '浏览次数', default=0)
-	isRecommend = models.IntegerField(choices=ARTICLE_STATUS, verbose_name='推荐',default=False)
+	click_count = models.IntegerField(verbose_name = '浏览次数', default=0)
+	recommend = models.IntegerField(choices=RECOMMEND, verbose_name='推荐',default=False)
+	status = models.CharField(choices=STATUS, verbose_name='状态',default='d',max_length=10)
 
 	#comment = models.TextField(verbose_name = '评论',max_length=200,blank=True, null=True)
 	# models.CASCADE django will delete related database
@@ -95,13 +115,16 @@ class Article(models.Model):
 
 	class Meta:
 		# ordering with pub_date decreasing then browse increasing
-		ordering = ['-pub_date', 'clickCount']
+		ordering = ['-pub_date', 'click_count']
 		# specify the verbose name
 		verbose_name = '文章'
 		verbose_name_plural = verbose_name
 
 	def __str__(self):
 		return self.title
+
+
+
 
 
 # 评论

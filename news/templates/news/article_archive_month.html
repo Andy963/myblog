@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script language="javascript" type="text/javascript"></script>
+    <ul>
+        {% for article in object_list %}
+        <li>{{ article.title }}: {{ article.pub_date|date:"Y-m-d H:i"}}</li>
+            {{article.content|truncatechars:100|safe}}
+        {% endfor %}
+        </ul>
+    <p>
+        {% if previous_month %}
+        Previous Month: {{ previous_month|date:"F Y" }}
+        {% endif %}
+        {% if next_month %}
+        Next Month: {{ next_month|date:"F Y" }}
+        {% endif %}
+    </p>
+
+</head>
+<body>
+
+</body>
+</html>

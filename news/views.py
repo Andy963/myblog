@@ -13,14 +13,16 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 import logging
 from .forms import CommentForm
-
-
+from django.views.generic.dates import MonthArchiveView
+from django.core.urlresolvers import reverse
 # use myself logger
 logger = logging.getLogger("blogLogger")
 
+"""
 def Index(request):
 	title_list = Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-	return render(request, 'news/index.html', {'title_list':title_list})
+	article_list = Article.objects.datetimes('pub_date', 'month', order='DESC')
+	return render(request, 'news/index.html', {'title_list':title_list, 'article_list': article_list})
 
 
 """
@@ -31,9 +33,20 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		# return the last five published blog
 		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-"""
+
+	def get_context_data(self, **kwargs):
+		kwargs['month_archive'] = Article.objects.archive()
+		return super(IndexView, self).get_context_data(**kwargs)
 
 
+class ArchiveView(generic.ListView):
+	template_name = "news/article_archive_month.html"
+	context_object_name = "title_list"
+	def get_queryset(self):
+		year = int(self.kwargs['year'])
+		month = int(self.kwargs['month'])
+		article_list = Article.objects.filter(pub_date__year=year, pub_date__month=month)
+		return article_list
 
 
 class DetailView(generic.DetailView):
@@ -47,14 +60,14 @@ class DetailView(generic.DetailView):
 	def get(self, request, *args, **kwargs):
 		# 根据文章的id 对每一次点击累加
 		article = Article.objects.get(id=kwargs['article_id'])
-		clickCount = article.clickCount
-		clickCount += 1
-		article.clickCount = clickCount
+		click_count = article.click_count
+		click_count += 1
+		article.click_count = click_count
 		article.save()
 
 		# Show comment_list at detail html
 		comment_list = article.comment_set.all()
-		context = {'blog': article, 'comment_list': comment_list}
+		context = {'article': article, 'comment_list': comment_list}
 
 		return render(request, 'news/detail.html', context)
 

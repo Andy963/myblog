@@ -8,7 +8,7 @@ app_name = 'news'
 
 #　main site
 urlpatterns = [
-               url(r'^$',Index, name='index'),
+               url(r'^$',IndexView.as_view(), name='index'),
 ]
 
 # add ueditor to myblog
@@ -27,6 +27,10 @@ urlpatterns += [
 urlpatterns += [
 	url(r'^(?P<article_id>\d+)/$', DetailView.as_view(), name='detail'),
 	url(r'^(?P<article_id>\d+)/comment$', CommentView.as_view(), name='comment'),
+]
+
+urlpatterns += [
+	url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/$',ArchiveView.as_view(),name="archive_month"),
 ]
 
 from django.conf import settings
