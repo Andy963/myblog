@@ -28,14 +28,14 @@
                     {% if title_list %}
                         {% for title in title_list %}
                             <li><h4>
-                                {% if  forloop.counter <= 4 %}&nbsp;&nbsp;
+                                &nbsp;
                                 <a href="/news/{{ title.id }}/">{{ title }}</a>
                                 &nbsp;&nbsp;<span> 作者：{{title.author.name}}&nbsp;&nbsp;发表时间:{{title.pub_date|date:"Y-m-d H:i"}} </span> </h4><br/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;{{title.content|truncatechars:100|safe}}
                                     <hr/>
                             </li>
                             <br/>
-                        {% endif %}
+
                         {% endfor %}
 
                     {% else %}
@@ -43,6 +43,20 @@
                     {% endif %}
                 </ul>
             </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if title_list.has_previous %}
+                        <a href="?page={{ title_list.previous_page_number }}">上一页</a>
+                    {% endif %}
+                    <span class="current">
+                        第 {{ title_list.number }} 页  共{{ title_list.paginator.num_pages }}页.
+                    </span>
+                    {% if title_list.has_next %}
+                         <a href="?page={{ title_list.next_page_number }}">下一页</a>
+                    {% endif %}
+                </span>
+            </div>
+        
         </div>
         <div class="hanger">
             <span>&nbsp;&nbsp;关于博主</span><br/><hr/>
@@ -52,7 +66,7 @@
             <ul class="introduce">
                 <li>昵称：Andy </li>
                 <li>职业：业余 </li>
-                <a  href="# " title="联系博主"><img src="{% static 'news/images/QQ.png'%}"/></a>
+                <a href="# " title="联系博主"><img src="{% static 'news/images/QQ.png'%}"></a>
 
             </ul>
             <div class="catalog">

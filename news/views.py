@@ -15,6 +15,8 @@ import logging
 from .forms import CommentForm
 from django.views.generic.dates import MonthArchiveView
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # use myself logger
 logger = logging.getLogger("blogLogger")
 
@@ -32,7 +34,18 @@ class IndexView(generic.ListView):
 
 	def get_queryset(self):
 		# return the last five published blog
-		return Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+		titles = Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')
+		paginator = Paginator(titles, 6)
+		page = self.request.GET.get('page')
+		try:
+			title_list = paginator.page(page)
+		except PageNotAnInteger:
+			title_list = paginator.page(1)
+		except EmptyPage:
+			# If page is out of range (e.g. 9999), deliver last page of results.
+			title_list = paginator.page(paginator.num_pages)
+
+		return (title_list)
 
 	def get_context_data(self, **kwargs):
 		kwargs['month_archive'] = Article.objects.archive()
@@ -45,8 +58,17 @@ class ArchiveView(generic.ListView):
 	def get_queryset(self):
 		year = int(self.kwargs['year'])
 		month = int(self.kwargs['month'])
-		article_list = Article.objects.filter(pub_date__year=year, pub_date__month=month)
-		return article_list
+		titles = Article.objects.filter(pub_date__year=year, pub_date__month=month)
+		paginator = Paginator(titles, 6)
+		page = self.request.GET.get('page')
+		try:
+			title_list = paginator.page(page)
+		except PageNotAnInteger:
+			title_list = paginator.page(1)
+		except EmptyPage:
+			# If page is out of range (e.g. 9999), deliver last page of results.
+			title_list = paginator.page(paginator.num_pages)
+		return (title_list)
 
 
 class DetailView(generic.DetailView):
