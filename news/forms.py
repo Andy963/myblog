@@ -10,8 +10,10 @@ class CommentForm(ModelForm):
 	class Meta:
 		model = Comment
 
-		fields = ['author', 'content']
+		fields = ['content']
 		widgets = {
+			'author': Textarea(attrs={'cols': 120, 'rows':1,'placeholder': '我的大名叫~'}),
+
 			'content': Textarea(attrs={'cols': 120, 'rows': 10, 'placeholder': '我来评两句~'}),
 		}
 

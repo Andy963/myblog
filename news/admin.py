@@ -57,12 +57,13 @@ class AuthorAdmin(admin.ModelAdmin):
 		self.message_user(request, "%s successfully changed." % message_bit)
 	select_gender.short_description = "select Author's gender"
 
-	list_display = ('name','gender','birthday','register_time','latest_log_time','email','total_blog')
-	search_fields = ('name','email','birthday','total_blog')
+
+	list_display = ('name','account','gender','birthday','register_time','latest_log_time','email','total_blog')
+	search_fields = ('name','account','email','birthday','total_blog')
 
 	fieldsets = (
 		('基本信息：', {
-			'fields': (('name','gender'),'birthday','email' )
+			'fields': (('name','account','gender'),'birthday','email' )
 		}),
 
 		('高级选项：', {

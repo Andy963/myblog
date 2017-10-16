@@ -6,6 +6,8 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from DjangoUeditor.models import UEditorField
 import collections
+
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -19,16 +21,15 @@ class Author(models.Model):
 			(1, 'female'),
 			(2, 'unknown'),)
 
-	name = models.CharField(verbose_name = "姓名", max_length=20)
+	name = models.CharField(verbose_name = "姓名", max_length=20,unique=True)
 	gender = models.IntegerField(choices= GENDER, verbose_name= '性别', default=2)
 	birthday = models.DateTimeField(verbose_name= '生日', blank=True, null=True)
 	register_time = models.DateTimeField(verbose_name= '注册日期', blank=True, null=True)
 	latest_log_time = models.DateTimeField(verbose_name='最近登陆日期', blank=True, null=True)
 	email = models.EmailField(verbose_name = "邮件",blank=True, null=True)
 	total_blog = models.IntegerField(verbose_name = "文章总数", default=0)
+	account = models.OneToOneField(User,verbose_name = "账号",unique=True, on_delete = models.CASCADE)
 
-	# if you want to use ImageField you should install pillow
-	#avatar = models.ImageField(upload_to = 'photos')
 
 	class Meta:
 		verbose_name = '作者'
@@ -102,9 +103,6 @@ class Article(models.Model):
 	click_count = models.IntegerField(verbose_name = '浏览次数', default=0)
 	recommend = models.IntegerField(choices=RECOMMEND, verbose_name='推荐',default=False)
 	status = models.CharField(choices=STATUS, verbose_name='状态',default='d',max_length=10)
-
-	#comment = models.TextField(verbose_name = '评论',max_length=200,blank=True, null=True)
-	# models.CASCADE django will delete related database
 	author = models.ForeignKey(Author, verbose_name= '作者',on_delete=models.CASCADE)
 	category = models.ForeignKey(Category, verbose_name='分类', blank=True, null=True)
 	tag = models.ManyToManyField(Tag, verbose_name='标签',blank=True)

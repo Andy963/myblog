@@ -16,7 +16,8 @@ from .forms import CommentForm
 from django.views.generic.dates import MonthArchiveView
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
 # use myself logger
 logger = logging.getLogger("blogLogger")
 
@@ -25,9 +26,9 @@ def Index(request):
 	title_list = Article.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 	article_list = Article.objects.datetimes('pub_date', 'month', order='DESC')
 	return render(request, 'news/index.html', {'title_list':title_list, 'article_list': article_list})
-
-
 """
+
+
 class IndexView(generic.ListView):
 	template_name = 'news/index.html'
 	context_object_name = 'title_list'
@@ -77,6 +78,7 @@ class DetailView(generic.DetailView):
 	#context_object_name = 'blog'
 
 	def get_queryset(self):
+
 		return Article.objects.filter(pub_date__lte=timezone.now())
 
 	def get(self, request, *args, **kwargs):
@@ -121,6 +123,8 @@ def verifyUser(request):
 			logger.error(e)
 
 
+
+
 class CommentView(FormView):
 	form_class = CommentForm
 	template_name = 'news/comment.html'
@@ -146,6 +150,4 @@ class CommentView(FormView):
 			'article': targetArticle,
 			'comment_list': targetArticle.comment_set.all(),
 		})
-
-
 

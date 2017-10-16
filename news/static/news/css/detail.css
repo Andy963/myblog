@@ -1,6 +1,7 @@
 body{
     background-color: #B4DAF0;
-    height: 800px;
+
+
 }
 
 .header{
@@ -9,13 +10,20 @@ body{
     margin-left: 10%;
 }
 
+/* 设定内容的格式 */
 .content{
     width: 80%;
-    height: 80%;
+    height:auto;
     margin-left: 10%;
     padding: 15px;
     background-image: url('../images/bg.jpg');
     background-repeat: no-repeat;
+    text-align: justify;
+}
+
+.content p
+{
+    text-indent: 20px;
 }
 
 .times{

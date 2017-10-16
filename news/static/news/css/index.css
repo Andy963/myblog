@@ -33,6 +33,12 @@ body{
     margin-left: 10px;
 }
 
+@keyframes myfirst
+{
+    from {background:red;}
+    to {background:yellow;}
+}
+
 .classify li{
     float: left;
     margin-top: 20px;
@@ -45,6 +51,8 @@ body{
     font-size: 24px;
     border-radius: 5px;
     display: block;
+    animation: myfirst 5s;
+    -webkit-animation: 5s;
 }
 
 .head img{

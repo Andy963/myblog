@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,10 @@
 <body>
     <div class="header">
         {% if article  %}
-        <h4><p align="center">{{ article.title }}&nbsp;&nbsp;<span class="times" >阅读{{article.clickCount}}次</span></p></h4>
+        <h4><p align="center">{{ article.title }}&nbsp;&nbsp;<span class="times" >阅读{{article.click_count}}次</span></p></h4>
     </div>
     <div class="content">
-        <p>&nbsp;{% autoescape off %}&nbsp;&nbsp;&nbsp;{{article.content }}{% endautoescape %}</p>
+        {% autoescape off %}{{article.content }}{% endautoescape %}
         {% endif %}
     </div>
     <div>
